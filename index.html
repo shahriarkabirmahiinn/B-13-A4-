@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Application Tracker Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-50 font-sans text-gray-800">
@@ -37,13 +37,12 @@
                 <span id="tab-wise-count" class=" text-gray-600 px-3 text-sm font-medium">0 Jobs</span>
             </div>
 
-            <div class="flex border-b border-gray-200 mb-6 gap-6">
-                <button onclick="changeTab('All')" id="tab-all" class="bg-blue-600 text-white px-3 py-1 rounded-lg 
-                text-sm font-medium border-transparent hover:text-gray-700 transition">All</button>
-                <button onclick="changeTab('interview')" id="tab-interview" class="pb-3 text-gray-500 border-b-2 border-transparent 
-                hover:text-gray-700 transition">Interview</button>
-                <button onclick="changeTab('rejected')" id="tab-rejected" class="pb-3 text-gray-500 border-b-2 border-transparent 
-                hover:text-gray-700 transition">Rejected</button>
+            <div class="flex gap-4 mb-6">
+                <button onclick="changeTab('all')" id="tab-all" class="px-4 py-2 rounded-md text-sm font-medium transition-all bg-blue-600 text-white">All</button>
+                
+                <button onclick="changeTab('interview')" id="tab-interview" class="px-4 py-2 rounded-md text-sm font-medium transition-all text-gray-500 hover:bg-gray-100 hover:text-gray-700">Interview</button>
+                
+                <button onclick="changeTab('rejected')" id="tab-rejected" class="px-4 py-2 rounded-md text-sm font-medium transition-all text-gray-500 hover:bg-gray-100 hover:text-gray-700">Rejected</button>
             </div>
 
             <div id="empty-state" class="hidden flex flex-col items-center justify-center py-16">
@@ -89,23 +88,24 @@
         }
 
         function changeTab(tabName) {
-            currentTab = tabName;
+    currentTab = tabName.toLowerCase(); 
+    
+    const tabs = ['all', 'interview', 'rejected'];
+    
+    tabs.forEach(t => {
+        const btn = document.getElementById(`tab-${t}`);
+        
+        if (t === currentTab) {
             
-            // Update Tab UI
-            const tabs = ['all', 'interview', 'rejected'];
-            tabs.forEach(t => {
-                const el = document.getElementById(`tab-${t}`);
-                if(t === tabName) {
-                    el.classList.add('text-blue-600', 'border-blue-600');
-                    el.classList.remove('text-gray-500', 'border-transparent');
-                } else {
-                    el.classList.remove('text-blue-600', 'border-blue-600');
-                    el.classList.add('text-gray-500', 'border-transparent');
-                }
-            });
-
-            renderJobs();
+            btn.className = "px-4 py-2 rounded-md text-sm font-medium transition-all bg-blue-600 text-white";
+        } else {
+            
+            btn.className = "px-4 py-2 rounded-md text-sm font-medium transition-all text-gray-500 hover:bg-gray-100 hover:text-gray-700";
         }
+    });
+
+    renderJobs();
+}
 
         function updateJobStatus(id, newStatus) {
             const jobIndex = jobs.findIndex(j => j.id === id);
