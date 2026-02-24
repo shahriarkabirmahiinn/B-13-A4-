@@ -58,10 +58,10 @@
     </main>
 
     <script>
-        // Application State
+        // Start state
         let currentTab = 'all'; 
         
-        // Meaningful job data 
+        // Job data
         let jobs = [
             { id: 1, companyName: "Mobile First Corp", position: "React Native Developer", location: "Remote", type: "Full-time", salary: "$130,000 - $175,000", description: "Build cross-platform mobile applications using React Native. Work on products used by millions of users worldwide.", status: "unassigned" },
             { id: 2, companyName: "WebFlow Agency", position: "Web Designer & Developer", location: "Los Angeles, CA", type: "Part-time", salary: "$80,000 - $120,000", description: "Create stunning web experiences for high-profile clients. Must have portfolio and experience with modern web design trends.", status: "unassigned" },
@@ -73,21 +73,22 @@
             { id: 8, companyName: "TechCorp Industries", position: "Senior Frontend Developer", location: "San Francisco, CA", type: "Full-time", salary: "$130,000 - $175,000", description: "We are looking for an experienced Frontend Developer to build scalable web applications using React and TypeScript. You will work with a talented team on cutting-edge projects .", status: "unassigned" }
         ];
 
-        // Core Functions
+        // Start app
         function init() {
             renderDashboard();
             renderJobs();
         }
 
+        // Change tab
         function changeTab(tabName) {
             currentTab = tabName.toLowerCase(); 
-            
             let tabs = ['all', 'interview', 'rejected'];
             
-            // Beginner friendly loop instead of forEach
             for (let i = 0; i < tabs.length; i++) {
                 let t = tabs[i];
-                let btn = document.getElementById(`tab-${t}`);
+                // Use concat instead of +
+                let tabId = 'tab-'.concat(t);
+                let btn = document.getElementById(tabId);
                 
                 if (t === currentTab) {
                     btn.className = "px-4 py-2 rounded-md text-sm font-medium transition-all bg-blue-600 text-white";
@@ -99,8 +100,8 @@
             renderJobs();
         }
 
+        // Update job
         function updateJobStatus(id, newStatus) {
-            // Beginner friendly way to find index
             let jobIndex = -1;
             for (let i = 0; i < jobs.length; i++) {
                 if (jobs[i].id === id) {
@@ -116,8 +117,8 @@
             }
         }
 
+        // Delete job
         function deleteJob(id) {
-            // Beginner friendly way to remove an item from array (without filter)
             let remainingJobs = [];
             for (let i = 0; i < jobs.length; i++) {
                 if (jobs[i].id !== id) {
@@ -130,11 +131,10 @@
             renderJobs();
         }
 
-        // Render Functions
+        // Show numbers
         function renderDashboard() {
             document.getElementById('dash-total').innerText = jobs.length;
             
-            // Counting manually without filter()
             let interviewCount = 0;
             let rejectedCount = 0;
             
@@ -150,12 +150,13 @@
             document.getElementById('dash-rejected').innerText = rejectedCount;
         }
 
+        // Show jobs
         function renderJobs() {
             let container = document.getElementById('jobs-container');
             let emptyState = document.getElementById('empty-state');
             container.innerHTML = '';
 
-            // Filter jobs manually with basic if-else
+            // Filter jobs
             let filteredJobs = [];
             for (let i = 0; i < jobs.length; i++) {
                 if (currentTab === 'all') {
@@ -167,19 +168,20 @@
                 }
             }
 
-            document.getElementById('tab-wise-count').innerText = `${filteredJobs.length} Jobs`;
+            // Use join instead of +
+            let jobCountText = [filteredJobs.length, "Jobs"].join(" ");
+            document.getElementById('tab-wise-count').innerText = jobCountText;
 
+            // Show empty state or jobs
             if (filteredJobs.length === 0) {
                 emptyState.classList.remove('hidden');
             } else {
                 emptyState.classList.add('hidden');
                 
-                // Using standard for loop instead of forEach
                 for (let i = 0; i < filteredJobs.length; i++) {
                     let job = filteredJobs[i];
                     let card = document.createElement('div');
                     
-                    // Simple if-else instead of complex ternary operators inside the template string
                     let displayStatus = "";
                     if (job.status === 'unassigned') {
                         displayStatus = "NOT APPLIED";
@@ -187,66 +189,70 @@
                         displayStatus = job.status;
                     }
 
-                    // Button classes logic
+                    // Button colors
                     let interviewClass = "px-6 py-2 rounded border-2 text-xs font-bold transition uppercase tracking-wide ";
                     if (job.status === 'interview') {
-                        interviewClass += "bg-[#10B981] text-white border-[#10B981]";
+                        interviewClass = interviewClass.concat("bg-[#10B981] text-white border-[#10B981]");
                     } else {
-                        interviewClass += "bg-white text-[#10B981] border-[#10B981] hover:bg-[#10B981] hover:text-white";
+                        interviewClass = interviewClass.concat("bg-white text-[#10B981] border-[#10B981] hover:bg-[#10B981] hover:text-white");
                     }
 
                     let rejectedClass = "px-6 py-2 rounded border-2 text-xs font-bold transition uppercase tracking-wide ";
                     if (job.status === 'rejected') {
-                        rejectedClass += "bg-[#EF4444] text-white border-[#EF4444]";
+                        rejectedClass = rejectedClass.concat("bg-[#EF4444] text-white border-[#EF4444]");
                     } else {
-                        rejectedClass += "bg-white text-[#EF4444] border-[#EF4444] hover:bg-[#EF4444] hover:text-white";
+                        rejectedClass = rejectedClass.concat("bg-white text-[#EF4444] border-[#EF4444] hover:bg-[#EF4444] hover:text-white");
                     }
                     
-                    card.innerHTML = `
-                        <div class="relative bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow mb-4">
-                            <button onclick="deleteJob(${job.id})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 border border-gray-100 p-2 rounded-full transition">
-                                <i class="fa-solid fa-trash-can text-sm"></i>
-                            </button>
+                    // Build HTML without + and without backticks
+                    let htmlParts = [
+                        '<div class="relative bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow mb-4">',
+                            '<button onclick="deleteJob(', job.id, ')" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 border border-gray-100 p-2 rounded-full transition">',
+                                '<i class="fa-solid fa-trash-can text-sm"></i>',
+                            '</button>',
 
-                            <div class="mb-4">
-                                <h3 class="text-xl font-bold text-[#002D58]">${job.companyName}</h3>
-                                <p class="text-lg text-gray-500 font-medium">${job.position}</p>
-                            </div>
+                            '<div class="mb-4">',
+                                '<h3 class="text-xl font-bold text-[#002D58]">', job.companyName, '</h3>',
+                                '<p class="text-lg text-gray-500 font-medium">', job.position, '</p>',
+                            '</div>',
 
-                            <div class="flex flex-wrap items-center gap-2 text-gray-500 text-sm mb-4 font-medium">
-                                <span>${job.location}</span>
-                                <span class="text-gray-300">•</span>
-                                <span>${job.type}</span>
-                                <span class="text-gray-300">•</span>
-                                <span>${job.salary}</span>
-                            </div>
+                            '<div class="flex flex-wrap items-center gap-2 text-gray-500 text-sm mb-4 font-medium">',
+                                '<span>', job.location, '</span>',
+                                '<span class="text-gray-300">•</span>',
+                                '<span>', job.type, '</span>',
+                                '<span class="text-gray-300">•</span>',
+                                '<span>', job.salary, '</span>',
+                            '</div>',
 
-                            <div class="mb-4">
-                                <span class="inline-block bg-[#EDF3FF] text-[#002D58] px-3 py-1 rounded text-[15px] font uppercase tracking-wider">
-                                    ${displayStatus}
-                                </span>
-                            </div>
+                            '<div class="mb-4">',
+                                '<span class="inline-block bg-[#EDF3FF] text-[#002D58] px-3 py-1 rounded text-[15px] font uppercase tracking-wider">',
+                                    displayStatus,
+                                '</span>',
+                            '</div>',
 
-                            <p class="text-gray-600 text-sm leading-relaxed mb-6">
-                                ${job.description}
-                            </p>
+                            '<p class="text-gray-600 text-sm leading-relaxed mb-6">',
+                                job.description,
+                            '</p>',
 
-                            <div class="flex gap-3">
-                                <button onclick="updateJobStatus(${job.id}, 'interview')" class="${interviewClass}">
-                                    interview
-                                </button>
-                                <button onclick="updateJobStatus(${job.id}, 'rejected')" class="${rejectedClass}">
-                                    rejected
-                                </button>
-                            </div>
-                        </div>
-                    `;
+                            '<div class="flex gap-3">',
+                                '<button onclick="updateJobStatus(', job.id, ', \'interview\')" class="', interviewClass, '">',
+                                    'interview',
+                                '</button>',
+                                '<button onclick="updateJobStatus(', job.id, ', \'rejected\')" class="', rejectedClass, '">',
+                                    'rejected',
+                                '</button>',
+                            '</div>',
+                        '</div>'
+                    ];
+
+                    // Join array to string
+                    card.innerHTML = htmlParts.join('');
                     container.appendChild(card);
                 }
             }
         }
         
-        // Initialize App
+        // Run code
         init();
     </script>
 </body>
