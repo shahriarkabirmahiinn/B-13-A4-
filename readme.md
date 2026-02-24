@@ -5,7 +5,7 @@ querySelector: Uses CSS styling syntax (like .class or #id) but only grabs the f
 querySelectorAll: Uses CSS syntax to grab all matching elements. This list is a static "snapshot"—it does not update automatically if the page changes.
 
 2. How do you create and insert a new element into the DOM?
-Answer: It takes 3 easy steps:
+Answer: It takes 3 steps:
 Step 1 - Create: Make the new element using document.createElement('div').
 Step 2 - Modify: Add your text, styles, or classes to it.
 Step 3 - Insert: Place it on the page inside a parent element using appendChild().
