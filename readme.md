@@ -1,1 +1,25 @@
-1. What is the difference between these DOM selectors? getElementById('id') gets one unique element and is the fastest method. getElementsByClassName('class') returns a live list of elements, which updates automatically if you add or remove elements later. querySelector('.class') uses CSS syntax but only retrieves the first matching element it finds. querySelectorAll('.class') uses CSS syntax and collects a static list of all matching elements. This is like taking a snapshot; it won't update automatically. 2. How do you create and insert a new element? It takes three simple steps: Create: Make it with document.createElement('div'). Modify: Add text or classes (for example, myDiv.innerText = "Hello"). Insert: Place it on the page using a parent element (for example, document.body.appendChild(myDiv)). 3. What is Event Bubbling? When you click an element, the event doesn’t stop there. It "bubbles up" to its parent, then to the grandparent, all the way to the top of the document. Example: If you click a <button> inside a <div>, the click event for the button fires first. Then, the click event for the <div> fires automatically. 4. What is Event Delegation? Instead of adding 50 event listeners to 50 different list items (<li>), you attach just one listener to their parent (<ul>). Why it’s useful: It saves memory and improves performance. It also automatically works on new list items you add to the page later. 5. preventDefault() vs stopPropagation()? preventDefault() stops the browser’s default behavior. For example, it prevents a form from refreshing the page or stops a link from opening. stopPropagation() prevents the event from bubbling up. If you click a button inside a card, this stops the card's click event from firing as well.
+1. What is the difference between getElementById, getElementsByClassName, querySelector, and querySelectorAll?
+Answer: getElementById Finds exactly one element using its ID. It is very fast.
+getElementsByClassName: Finds all elements with a specific class. This list is "live," meaning it updates automatically if you add or remove elements later.
+querySelector: Uses CSS styling syntax (like .class or #id) but only grabs the first matching element it finds.
+querySelectorAll: Uses CSS syntax to grab all matching elements. This list is a static "snapshot"—it does not update automatically if the page changes.
+
+2. How do you create and insert a new element into the DOM?
+Answer: It takes 3 easy steps:
+Step 1 - Create: Make the new element using document.createElement('div').
+Step 2 - Modify: Add your text, styles, or classes to it.
+Step 3 - Insert: Place it on the page inside a parent element using appendChild().
+
+3. What is Event Bubbling?
+Answer: When you click an element, the click event doesn't stop there. It "bubbles up" to its parent, then its grandparent, all the way to the top of the page.
+Example: If you click a <button> that is inside a <div>, the button's click event happens first, and then the <div>'s click event happens automatically right after it.
+
+4. What is Event Delegation?
+Answer: Instead of adding 50 different click listeners to 50 list items (<li>), you attach just one listener to their parent container (like the <ul>).
+Why use it? It saves memory and makes your code faster. Also, if you add new list items to the page later, the parent container will automatically handle their clicks too.
+
+5. What is the difference between preventDefault() and stopPropagation()?
+Answer: preventDefault(): Stops the browser's normal behavior. 
+Example: Stops a form from reloading the whole page when I hit submit, or stops a link from taking you to a new page.
+stopPropagation(): Stops Event Bubbling. 
+Example: If I click a button inside a card, this stops the click event from bubbling up and triggering the card's click event too.
